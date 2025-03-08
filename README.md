@@ -1,38 +1,95 @@
-# sv
+# Bank Statement App
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+This is a SvelteKit application for importing, viewing, and analyzing bank statements. The application allows you to import bank statement JSON files, view transactions, mark specific transactions, and calculate the sum of marked transactions.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Import bank statement JSON files
+- View transactions for different account statements
+- Mark and unmark transactions
+- Calculate the sum of marked transactions
 
-```bash
-# create a new project in the current directory
-npx sv create
+## Prerequisites
 
-# create a new project in my-app
-npx sv create my-app
+- Node.js (v14 or higher)
+- pnpm (v6 or higher)
+
+## Getting Started
+
+### Clone the repository
+
+```sh
+# Clone the repository
+git clone https://github.com/magnus-hansson/bank-statement-app.git
+cd bank-statement-app
 ```
 
-## Developing
+### Install dependencies
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```sh
+# Install dependencies
+pnpm install
 ```
 
-## Building
+### Set up the database
 
-To create a production version of your app:
+Create a `.env` file in the root directory with the following content:
 
-```bash
-npm run build
+```sh
+DATABASE_URL=./local.db
 ```
 
-You can preview the production build with `npm run preview`.
+Run the database migrations:
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```sh
+# Run database migrations
+pnpm migrate
+```
+
+### Run the development server
+
+```sh
+# Start the development server
+pnpm dev
+```
+
+Open your browser and navigate to `http://localhost:3000`.
+
+## Usage
+
+### Importing a Bank Statement
+
+1. Navigate to the "Import Statement" page using the navigation bar.
+2. Select a JSON file containing your bank statement data.
+3. The file will be uploaded and imported into the database.
+4. After a successful import, you will be redirected to the bank statement view.
+
+### Viewing Transactions
+
+1. Navigate to the "Bank Statement" page using the navigation bar.
+2. Select the desired account statement period from the dropdown.
+3. View the transactions for the selected period.
+
+### Marking Transactions
+
+1. Click on a transaction row to mark or unmark it.
+2. The total sum of marked transactions will be displayed at the top.
+
+## Project Structure
+
+- `src/`: Source code for the SvelteKit application
+  - `lib/`: Shared components and utilities
+  - `routes/`: SvelteKit routes
+  - `server/`: Server-side code, including database setup and migrations
+- `static/`: Static assets
+- `drizzle/`: Database migration files
+- `.env`: Environment variables
+- `package.json`: Project configuration and dependencies
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.
