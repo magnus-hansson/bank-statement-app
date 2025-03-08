@@ -3,6 +3,9 @@ import { db } from '$lib/server/db';
 import { accounts, accountStatements, transactions } from '$lib/server/db/schema';
 import { v4 as uuidv4 } from 'uuid';
 import { sql } from 'drizzle-orm';
+import { env } from '$env/dynamic/private';
+
+const childrenNames = env.CHILDREN_NAMES.split(',');
 
 export async function POST({ request }) {
     try {
@@ -54,6 +57,7 @@ export async function POST({ request }) {
                 for (const tx_data of data.inlaAccountTransactions) {
                     // Use eventTime as a unique identifier (with slight modification for uniqueness)
                     const txId = tx_data.eventTime + '-' + uuidv4().substring(0, 8);
+                    const isMarked = childrenNames.includes(tx_data.transactionText) && parseFloat(tx_data.transactionAmount) < 0 ? 1 : 0;
                     
                     await tx.insert(transactions).values({
                         id: txId,
@@ -66,7 +70,7 @@ export async function POST({ request }) {
                         serialNumber: tx_data.serialNumber || '',
                         bankgiroPlusgiroNumber: tx_data.bankgiroPlusgiroNumber || '',
                         eventTime: tx_data.eventTime || '',
-                        isMarked: 0, // Default to unmarked
+                        isMarked,
                         importDate
                     });
                 }
